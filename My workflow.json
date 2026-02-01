@@ -1,0 +1,106 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "db3aa95e-6cb0-4108-8907-50f1860d9c28",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "92251793-e2ab-4818-984d-2560888b2544",
+      "name": "Webhook",
+      "webhookId": "db3aa95e-6cb0-4108-8907-50f1860d9c28",
+      "executeOnce": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "llama3.1:latest",
+          "mode": "list",
+          "cachedResultName": "llama3.1:latest"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are acting as a **senior payments reliability engineer and autonomous payment-operations agent\nanalyzing a live payment incident** at a large fintech processing millions of transactions per day.\n\nYour goal is to **detect non-random failure patterns, reason under uncertainty, and propose\nsafe, explainable, and operational interventions** that balance success rate, latency, cost, and risk.\n\n---\n\nSUMMARY METRICS:\n{{$json.body.prompt }}\n\n\n### TASK (Agent Reasoning Required)\n\n1. **Identify systemic patterns**\n   - Detect correlated failures or performance degradation that are unlikely to be random.\n   - Focus on merchant, currency, issuer, retry behavior, or latency clustering.\n\n2. **Form 2–3 concrete root-cause hypotheses**\n   Each hypothesis MUST explicitly include:\n   - The affected merchant(s) and/or currency\n   - The observed failure or latency behavior\n   - A plausible causal mechanism\n     (e.g., issuer routing issues, regional PSP degradation, retry amplification, method fatigue)\n\n3. **Assign a likelihood score** to each hypothesis:\n   - High / Medium / Low\n   - Justify the score using evidence from the observed signals\n\n4. **Recommend ONE immediate automated mitigation action per hypothesis**\n   - Actions must be realistic for a payment-ops agent\n   - Examples: retry tuning, routing shifts, path suppression, rate limiting, alerts\n   - Actions should improve outcomes **without introducing undue risk**\n\n5. **Specify ONE additional signal or metric** per hypothesis\n   - This signal should help confirm or falsify the hypothesis\n   - Examples: issuer response times, retry depth, regional error codes, approval deltas\n\n---\n\n### GUARDRAILS & CONSTRAINTS\n\n- Do **NOT** restate or summarize the input data\n- Avoid generic explanations unless directly supported by evidence\n- Assume decisions are being made **during a live incident**\n- Be concise, operational, and decisive\n- Prefer **explainable interventions** over aggressive optimization\n- If uncertainty is high, bias toward **reversible or low-risk actions**\n\n---\n\n### OUTPUT FORMAT (STRICT)\n\n**Systemic Patterns**\n- Bullet points only\n\n**Root-Cause Hypotheses**\nFor each hypothesis:\n- Hypothesis title\n- Affected merchant/currency\n- Observed behavior\n- Causal mechanism\n- Likelihood score + justification\n- Immediate mitigation action\n- Additional confirming signal\n\nYour response will be used directly by an agentic payment-operations system."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.ollama",
+      "typeVersion": 1,
+      "position": [
+        256,
+        16
+      ],
+      "id": "cd002974-6eeb-41ce-a63f-4ffb94df92a9",
+      "name": "Message a model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "0Um9SkzSHmJcDpVd",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        608,
+        16
+      ],
+      "id": "107d99c6-8595-4295-a358-0ee632d977a1",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "ff60ad6d-d7f5-4549-9173-352d69177915",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d3db950766f35cba867be9a1c1c77e04c758eb539c3c8aa3e4426f411f4d2087"
+  },
+  "id": "EIk0VqPiFWooGnXyg6z7M",
+  "tags": []
+}
