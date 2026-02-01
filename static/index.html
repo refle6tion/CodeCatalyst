@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Payment Stream</h1>
+            <button id="startBtn">Start Analysis</button>
+        </header>
+
+        <div id="status" class="status"></div>
+
+        <div class="monitor">
+            <div class="monitor-header">
+                <span>STATUS</span>
+                <span>CURRENCY</span>
+                <span>AMOUNT</span>
+                <span>LATENCY</span>
+            </div>
+            <div id="stream-output" class="stream-content"></div>
+        </div>
+
+        <section id="analysis-section" class="analysis-section hidden">
+            <h2>Analysis Result</h2>
+            <div id="analysis-result" class="result-box"></div>
+        </section>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
